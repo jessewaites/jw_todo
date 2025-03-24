@@ -63,3 +63,4 @@ group :test do
 end
 
 gem "devise", "~> 4.9"
+gem "acts_as_list"
