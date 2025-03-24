@@ -18,6 +18,11 @@
     <%= form.text_field :name %>
   </div>
 
+<div>
+  <%= form.label "Check to make this list public", style: "display: block" %>
+  <%= form.check_box :public %>
+</div>
+
   <div>
     <%= form.submit %>
   </div>

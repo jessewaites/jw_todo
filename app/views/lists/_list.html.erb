@@ -5,8 +5,13 @@
   </p>
 
   <p>
+    <strong>Private List:</strong>
+    <%= !list.public? %>
+  </p>
+
+  <p>
     <strong>User:</strong>
-    <%= list.user_id %>
+    <%= list.user.email %>
   </p>
 
 </div>
