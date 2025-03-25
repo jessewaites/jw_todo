@@ -1,9 +1,10 @@
 class ListItemsController < ApplicationController
+  before_action :set_list
   before_action :set_list_item, only: %i[ show edit update destroy ]
 
   # GET /list_items or /list_items.json
   def index
-    @list_items = ListItem.all
+    @list_items = @list.items
   end
 
   # GET /list_items/1 or /list_items/1.json
@@ -21,12 +22,11 @@ class ListItemsController < ApplicationController
 
   # POST /list_items or /list_items.json
   def create
-    @list_item = ListItem.new(list_item_params)
+   @list_item = @list.list_items.build(list_item_params)
 
     respond_to do |format|
       if @list_item.save
-        format.html { redirect_to @list_item, notice: "List item was successfully created." }
-        format.json { render :show, status: :created, location: @list_item }
+        format.turbo_stream { }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @list_item.errors, status: :unprocessable_entity }
@@ -58,13 +58,15 @@ class ListItemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_list_item
-      @list_item = ListItem.find(params.expect(:id))
+    def set_list
+      @list = List.find(params[:list_id])
     end
 
-    # Only allow a list of trusted parameters through.
+    def set_list_item
+      @list_item = @list.list_items.find(params[:id])
+    end
+
     def list_item_params
-      params.expect(list_item: [ :name, :list_id, :position, :status ])
+      params.expect(list_item: [ :list_id, :name, :position, :status ])
     end
 end

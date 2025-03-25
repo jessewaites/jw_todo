@@ -1,10 +1,10 @@
-<%= form_with(model: list_item) do |form| %>
-  <% if list_item.errors.any? %>
+<%= form_with(model: [@list, @list_item]) do |form| %>
+  <% if @list_item.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(list_item.errors.count, "error") %> prohibited this list_item from being saved:</h2>
+      <h2><%= pluralize(@list_item.errors.count, "error") %> prohibited this List Item from being saved:</h2>
 
       <ul>
-        <% list_item.errors.each do |error| %>
+        <% @list_item.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -12,23 +12,8 @@
   <% end %>
 
   <div>
-    <%= form.label :name, style: "display: block" %>
+    <%= form.label :name, "Add To Do Item", style: "display: block" %>
     <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.label :list_id, style: "display: block" %>
-    <%= form.text_field :list_id %>
-  </div>
-
-  <div>
-    <%= form.label :position, style: "display: block" %>
-    <%= form.number_field :position %>
-  </div>
-
-  <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.text_field :status %>
   </div>
 
   <div>

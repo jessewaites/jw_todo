@@ -9,6 +9,7 @@ class ListsController < ApplicationController
 
   # GET /lists/1 or /lists/1.json
   def show
+    @list_item = @list.list_items.build
   end
 
   # GET /lists/new
@@ -59,13 +60,11 @@ class ListsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_list
-      @list = List.find(params.expect(:id))
+      @list = List.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def list_params
-      params.expect(list: [ :name, :user_id ])
+      params.expect(list: [ :name, :user_id, :public, :status ])
     end
 end
