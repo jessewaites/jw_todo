@@ -65,3 +65,4 @@ end
 gem "devise", "~> 4.9"
 gem "acts_as_list"
 gem "requestjs-rails"
+gem "rubocop", require: false
