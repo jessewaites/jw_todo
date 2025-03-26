@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_25_141544) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_26_181102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,9 +18,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_25_141544) do
     t.string "name"
     t.bigint "list_id", null: false
     t.integer "position"
-    t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "completed", default: false
     t.index ["list_id"], name: "index_list_items_on_list_id"
   end
 
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_25_141544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "public", default: false
-    t.string "status", default: "pending"
+    t.boolean "completed", default: false
     t.index ["user_id"], name: "index_lists_on_user_id"
   end
 

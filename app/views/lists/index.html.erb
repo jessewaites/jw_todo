@@ -2,15 +2,67 @@
 
 <% content_for :title, "Lists" %>
 
-<h1>Lists</h1>
+  <div class="container">
+  <h1>Lists</h1>
 
-<div id="lists">
-  <% @lists.each do |list| %>
-    <%= render list %>
-    <p>
-      <%= link_to "Show this list", list %>
-    </p>
-  <% end %>
+  <div class="list-filter mb-4">
+    <%= form_tag lists_path, method: :get, class: 'form-inline' do %>
+      <div class="btn-group me-3" role="group" aria-label="List Visibility Filter">
+        <%= link_to 'Public Lists', lists_path(list_filter: 'public', completed_filter: params[:completed_filter]), 
+            class: "btn btn-#{params[:list_filter] == 'public' || params[:list_filter].nil? ? 'primary' : 'outline-secondary'}" %>
+        
+        <% if current_user %>
+          <%= link_to 'My Lists', lists_path(list_filter: 'my_lists', completed_filter: params[:completed_filter]), 
+              class: "btn btn-#{params[:list_filter] == 'my_lists' ? 'info' : 'outline-secondary'}" %>
+        <% end %>
+      </div>
+
+      <div class="btn-group" role="group" aria-label="List Completion Filter">
+        <%= link_to 'All Lists', lists_path(list_filter: params[:list_filter], completed_filter: 'all'), 
+            class: "btn btn-#{params[:completed_filter] == 'all' || params[:completed_filter].nil? ? 'primary' : 'outline-secondary'}" %>
+        
+        <%= link_to 'Completed Lists', lists_path(list_filter: params[:list_filter], completed_filter: 'completed'), 
+            class: "btn btn-#{params[:completed_filter] == 'completed' ? 'success' : 'outline-secondary'}" %>
+        
+        <%= link_to 'Incomplete Lists', lists_path(list_filter: params[:list_filter], completed_filter: 'not_completed'), 
+            class: "btn btn-#{params[:completed_filter] == 'not_completed' ? 'warning' : 'outline-secondary'}" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="lists-container">
+    <% if @lists.any? %>
+      <% @lists.each do |list| %>
+        <div class="card mb-3 <%= list.completed? ? 'border-success' : 'border-secondary' %>">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to list.name, list_path(list) %>
+              <% if list.completed? %>
+                <span class="badge bg-success ms-2">Completed</span>
+              <% end %>
+              <% unless list.public? %>
+                <span class="badge bg-secondary ms-2">Private</span>
+              <% end %>
+            </h5>
+            <p class="card-text">
+              <%= pluralize(list.list_items.count, 'item') %> 
+              (<%= list.list_items.where(completed: true).count %> Complete)
+            </p>
+            <% if current_user && list.user == current_user %>
+              <small class="text-muted">Created by you</small>
+            <% else %>
+              <small class="text-muted">Created by <%= list.user.email %></small>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="alert alert-info">
+        No lists found. 
+        <%= link_to 'Create a new list', new_list_path %>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to "New list", new_list_path, class: "btn btn-success" %>
 </div>
 
-<%= link_to "New list", new_list_path %>

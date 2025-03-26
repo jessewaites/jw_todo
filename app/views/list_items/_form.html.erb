@@ -1,22 +1,24 @@
-<%= form_with(model: [@list, @list_item]) do |form| %>
-  <% if @list_item.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@list_item.errors.count, "error") %> prohibited this List Item from being saved:</h2>
+<%= turbo_frame_tag "new_list_item_form", data: { turbo_frame: "_top" } do %>
+  <%= form_with(model: [list, list_item], data: { action: "turbo:submit-end->form#reset" }) do |form| %>
+    <% if list_item.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(list_item.errors.count, "error") %> prohibited this List Item from being saved:</h2>
 
-      <ul>
-        <% @list_item.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% list_item.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :name, "Add To Do", style: "display: block" %>
+      <%= form.text_field :name %>
+    </div>
+
+    <div>
+      <%= form.submit list_item.new_record? ? "Create List Item" : "Update List Item" %>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :name, "Add To Do Item", style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>

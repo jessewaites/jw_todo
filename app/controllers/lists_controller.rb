@@ -4,13 +4,33 @@ class ListsController < ApplicationController
 
   # GET /lists or /lists.json
   def index
-    @lists = List.all.where(public: true)
+    # @lists = List.all.where(public: true)
+    #
+    @completed_filter = params[:completed_filter] || "all"
+
+    @lists = List.order(created_at: :desc).where(public: true)
+
+    @lists = case @completed_filter
+    when "completed"
+               @lists.where(completed: true)
+    when "not_completed"
+               @lists.where(completed: false)
+    else
+               @lists
+    end
   end
 
   # GET /lists/1 or /lists/1.json
   def show
+  if @list.public?
     @list_item = @list.list_items.build
+  elsif @list.user == current_user
+    @list_item = @list.list_items.build
+  else
+    redirect_to root_path, alert: "You do not have permission to view that list."
+    nil
   end
+end
 
   # GET /lists/new
   def new

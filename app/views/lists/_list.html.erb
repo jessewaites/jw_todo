@@ -4,10 +4,26 @@
     <%= list.name %>
   </h1>
 
+  <% if list.public? %>
   <p>
-    <strong>Private List:</strong>
-    <%= !list.public? %>
+    <strong>THIS IS A PUBLIC LIST</strong>
   </p>
+  <% else %>
+  <p>
+    <strong>THIS IS A PRIVATE LIST</strong>
+  </p>
+  <% end %>
+
+
+<% if list.completed? %>
+  <p>
+    <strong>THIS IS A COMPLETED LIST</strong>
+  </p>
+  <% else %>
+  <p>
+    <strong>THIS IS AN INCOMPLETE LIST</strong>
+  </p>
+  <% end %>
 
   <p>
     <strong>User:</strong>

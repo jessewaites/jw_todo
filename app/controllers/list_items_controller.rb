@@ -22,14 +22,20 @@ class ListItemsController < ApplicationController
 
   # POST /list_items or /list_items.json
   def create
-   @list_item = @list.list_items.build(list_item_params)
+    @list_item = @list.list_items.build(list_item_params)
 
     respond_to do |format|
       if @list_item.save
-        format.turbo_stream { }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("todo-items", partial: "lists/todo_item", locals: { item: @list_item }),
+            turbo_stream.replace("new_list_item_form", partial: "form", locals: { list: @list, list_item: @list.list_items.build })
+          ]
+        end
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @list_item.errors, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("new_list_item_form", partial: "form", locals: { list: @list, list_item: @list_item })
+        end
       end
     end
   end
@@ -38,8 +44,12 @@ class ListItemsController < ApplicationController
   def update
     respond_to do |format|
       if @list_item.update(list_item_params)
-        format.html { redirect_to @list_item, notice: "List item was successfully updated." }
-        format.json { render :show, status: :ok, location: @list_item }
+      @list_item.list.update_completion_status!
+       format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("todo-items", partial: "lists/todo_item", locals: { item: @list_item })
+          ]
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @list_item.errors, status: :unprocessable_entity }
@@ -67,6 +77,6 @@ class ListItemsController < ApplicationController
     end
 
     def list_item_params
-      params.expect(list_item: [ :list_id, :name, :position, :status ])
+      params.expect(list_item: [ :list_id, :name, :position, :completed ])
     end
 end

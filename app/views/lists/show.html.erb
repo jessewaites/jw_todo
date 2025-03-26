@@ -2,17 +2,20 @@
 
 <%= render @list %>
 
-<div id="todo-items">
+
+<div class="d-grid gap-3" id="todo-items">
   <% @list.list_items.each do |item| %>
     <%= render partial: 'todo_item', locals: { item: item } %>
   <% end %>
 </div>
 
-<%= turbo_frame_tag :new_list_item, src: new_list_list_item_path(@list) %>
+<% if current_user && @list.user_id == current_user.id %>
+  <%= turbo_frame_tag :new_list_item, src: new_list_list_item_path(@list) %>
 
-<div>
-  <%= link_to "Edit this list", edit_list_path(@list) %> |
-  <%= link_to "Back to lists", lists_path %>
+  <div class="m-10">
+    <%= link_to "Edit this list", edit_list_path(@list) %> |
+    <%= link_to "Back to lists", lists_path %>
 
-  <%= button_to "Destroy this list", @list, method: :delete %>
-</div>
+    <%= button_to "Destroy this list", @list, method: :delete %>
+  </div>
+<% end %>
