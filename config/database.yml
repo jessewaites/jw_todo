@@ -22,3 +22,9 @@ cable:
   database: jw_todo_production
   username: jw_todo
   password: <%= ENV["JW_TODO_DATABASE_PASSWORD"] %>
+
+queue:
+  <<: *default
+  database: jw_todo_production
+  username: jw_todo
+  password: <%= ENV["JW_TODO_DATABASE_PASSWORD"] %>
