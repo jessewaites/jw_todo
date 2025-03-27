@@ -12,7 +12,7 @@
   <% end %>
 
 <div class="list-filter mb-4">
-  <%= form_tag lists_path, method: :get, class: 'form-inline d-flex gap-3 align-items-center' do %>
+  <%= form_tag lists_path, method: :get, class: 'form-inline d-flex gap-2 align-items-center' do %>
     <%= link_to 'Public', lists_path(list_filter: 'public', completed_filter: params[:completed_filter]), 
         class: "btn btn-#{params[:list_filter] == 'public' || params[:list_filter].nil? ? 'primary' : 'outline-secondary'}" %>
     
