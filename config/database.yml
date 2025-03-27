@@ -90,5 +90,5 @@ production:
     <<: *primary_production
     database: jw_todo_production_queue
     migrations_paths: db/queue_migrate
-  cable: &production
-    <<: *production
+cable: &production
+  <<: *production
