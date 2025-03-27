@@ -20,9 +20,6 @@
       <%= link_to 'My Lists', lists_path(list_filter: 'my_lists', completed_filter: params[:completed_filter]), 
           class: "btn btn-#{params[:list_filter] == 'my_lists' ? 'info' : 'outline-secondary'}" %>
     <% end %>
-
-    <%= link_to 'All Lists', lists_path(list_filter: params[:list_filter], completed_filter: 'all'), 
-        class: "btn btn-#{params[:completed_filter] == 'all' || params[:completed_filter].nil? ? 'primary' : 'outline-secondary'}" %>
     
     <%= link_to 'Completed Lists', lists_path(list_filter: params[:list_filter], completed_filter: 'completed'), 
         class: "btn btn-#{params[:completed_filter] == 'completed' ? 'success' : 'outline-secondary'}" %>
