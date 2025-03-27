@@ -28,3 +28,9 @@ queue:
   database: jw_todo_production
   username: jw_todo
   password: <%= ENV["JW_TODO_DATABASE_PASSWORD"] %>
+
+cache:
+  <<: *default
+  database: jw_todo_production
+  username: jw_todo
+  password: <%= ENV["JW_TODO_DATABASE_PASSWORD"] %>
