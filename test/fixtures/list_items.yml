@@ -4,10 +4,10 @@ one:
   name: MyString
   list: one
   position: 1
-  status: MyString
+  completed: true
 
 two:
   name: MyString
   list: two
-  position: 1
-  status: MyString
+  position: 2
+  completed: false

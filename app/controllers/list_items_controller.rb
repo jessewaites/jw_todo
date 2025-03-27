@@ -18,6 +18,8 @@ class ListItemsController < ApplicationController
 
   # GET /list_items/1/edit
   def edit
+    @list = List.find(params[:list_id])
+    @list_item = @list.list_items.find(params[:id])
   end
 
   # POST /list_items or /list_items.json
@@ -50,6 +52,7 @@ class ListItemsController < ApplicationController
             turbo_stream.append("todo-items", partial: "lists/todo_item", locals: { item: @list_item })
           ]
         end
+      format.html { redirect_to @list_item.list, notice: "List Item was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @list_item.errors, status: :unprocessable_entity }
@@ -62,7 +65,7 @@ class ListItemsController < ApplicationController
     @list_item.destroy!
 
     respond_to do |format|
-      format.html { redirect_to list_items_path, status: :see_other, notice: "List item was successfully destroyed." }
+      format.html { redirect_to list_path(@list), status: :see_other, notice: "List item was successfully destroyed." }
       format.json { head :no_content }
     end
   end

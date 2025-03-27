@@ -16,4 +16,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "lists#index"
+
+  resources :configurations, only: [] do
+    get :ios_v1, on: :collection
+  end
 end

@@ -4,7 +4,7 @@
 
 
 <div class="d-grid gap-3" id="todo-items">
-  <% @list.list_items.each do |item| %>
+  <% @list.list_items.select(&:persisted?).each do |item| %>
     <%= render partial: 'todo_item', locals: { item: item } %>
   <% end %>
 </div>

@@ -5,19 +5,25 @@
   <div class="container">
   <h1>Lists</h1>
 
+  <% if turbo_native_app? %>
+    <p>Hi Peny Team - This sentance is only visible on hotwire native mobile apps such as the iphone app, it is not visible on the web apps.</p>
+  <% else %>
+    <p>Hi Peny Team - This sentance is only visible on the web apps such as desktop, it is not visible on the mobile apps.</p>
+  <% end %>
+
   <div class="list-filter mb-4">
     <%= form_tag lists_path, method: :get, class: 'form-inline' do %>
       <div class="btn-group me-3" role="group" aria-label="List Visibility Filter">
         <%= link_to 'Public Lists', lists_path(list_filter: 'public', completed_filter: params[:completed_filter]), 
             class: "btn btn-#{params[:list_filter] == 'public' || params[:list_filter].nil? ? 'primary' : 'outline-secondary'}" %>
-        
         <% if current_user %>
           <%= link_to 'My Lists', lists_path(list_filter: 'my_lists', completed_filter: params[:completed_filter]), 
               class: "btn btn-#{params[:list_filter] == 'my_lists' ? 'info' : 'outline-secondary'}" %>
         <% end %>
       </div>
+      
 
-      <div class="btn-group" role="group" aria-label="List Completion Filter">
+      <div class="pt-5 btn-group" role="group" aria-label="List Completion Filter">
         <%= link_to 'All Lists', lists_path(list_filter: params[:list_filter], completed_filter: 'all'), 
             class: "btn btn-#{params[:completed_filter] == 'all' || params[:completed_filter].nil? ? 'primary' : 'outline-secondary'}" %>
         
@@ -64,5 +70,15 @@
     <% end %>
   </div>
   <%= link_to "New list", new_list_path, class: "btn btn-success" %>
+  <% if user_signed_in? %>
+    <div class="btn-group" role="group">
+      <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger" %>
+    </div>
+  <% else %>
+    <div class="btn-group" role="group">
+      <%= link_to "Log In", new_user_session_path, class: "btn btn-outline-primary" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-success" %>
+    </div>
+  <% end %>
 </div>
 

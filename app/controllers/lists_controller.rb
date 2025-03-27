@@ -2,23 +2,25 @@ class ListsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_list, only: %i[ show edit update destroy ]
 
-  # GET /lists or /lists.json
-  def index
-    # @lists = List.all.where(public: true)
-    #
-    @completed_filter = params[:completed_filter] || "all"
+# GET /lists or /lists.json
+def index
+  @completed_filter = params[:completed_filter] || "all"
 
-    @lists = List.order(created_at: :desc).where(public: true)
-
-    @lists = case @completed_filter
-    when "completed"
-               @lists.where(completed: true)
-    when "not_completed"
-               @lists.where(completed: false)
-    else
-               @lists
-    end
+  @lists = if params[:list_filter] == "my_lists"
+             current_user.lists.order(created_at: :desc)
+  else
+             List.order(created_at: :desc).where(public: true)
   end
+
+  @lists = case @completed_filter
+  when "completed"
+             @lists.where(completed: true)
+  when "not_completed"
+             @lists.where(completed: false)
+  else
+             @lists
+  end
+end
 
   # GET /lists/1 or /lists/1.json
   def show
@@ -85,6 +87,6 @@ end
     end
 
     def list_params
-      params.expect(list: [ :name, :user_id, :public, :status ])
+      params.expect(list: [ :id, :name, :user_id, :public, :status ])
     end
 end

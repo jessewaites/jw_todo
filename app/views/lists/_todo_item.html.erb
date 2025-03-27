@@ -6,7 +6,6 @@
       <%= check_box_tag 'item_completed', '1', item.completed, class: "form-check-input me-2", id: dom_id(item, :checkbox),
           data: { controller: "checkbox", action: "change->checkbox#update", checkbox_url_value: url_for([item.list, item])} %>
       
-
     <% end %>
   </div>
 </div>
